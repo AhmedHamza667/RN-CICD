@@ -1,13 +1,14 @@
-name: React Native CI
+name: iOS CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   test:
+    name: Build iOS App
     runs-on: macos-latest
 
     steps:
@@ -30,8 +31,6 @@ jobs:
       - name: Run Jest tests
         run: npm test
 
-
-      # iOS build check
       - name: Build iOS app
         run: |
           cd ios
