@@ -1,0 +1,38 @@
+name: React Native CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install CocoaPods dependencies
+        run: |
+          sudo gem install cocoapods
+          cd ios && pod install && cd ..
+
+      - name: Run Jest tests
+        run: npm test
+
+
+      # iOS build check
+      - name: Build iOS app
+        run: |
+          cd ios
+          xcodebuild -workspace AwesomeProject.xcworkspace -scheme AwesomeProject -sdk iphonesimulator -configuration Debug build
